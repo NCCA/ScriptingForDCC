@@ -1,5 +1,5 @@
 import maya.api.OpenMaya as OpenMaya
-import uuid
+import ctypes
 
 class MayaImage :
   """ The main class, needs to be constructed with a filename """
@@ -11,7 +11,7 @@ class MayaImage :
     self.image.readFromFile(filename)
     self.width,self.height=self.image.getSize()
     # get the pixel data
-    self.charPixelPtr = uuid.ctypes.cast(self.image.pixels(), uuid.ctypes.POINTER(uuid.ctypes.c_char) )
+    self.charPixelPtr = ctypes.cast(self.image.pixels(), ctypes.POINTER(ctypes.c_char) )
 
     # query to see if it's an RGB or RGBA image, this will be True or False
     self.hasAlpha=self.image.isRGBA()
@@ -32,11 +32,11 @@ class MayaImage :
       return
     # now calculate the index into the 1D array of data
     index=(y*self.width*4)+x*4
-    # grab the pixels
-    red = int(ord(self.charPixelPtr[index]))
-    green = int(ord(self.charPixelPtr[index+1]))
-    blue = int(ord(self.charPixelPtr[index+2]))
-    alpha=int(ord(self.charPixelPtr[index+3]))
+    # grab the pixels we need to convert from char to integer ordinal type so use ord
+    red   = ord(self.charPixelPtr[index])
+    green = ord(self.charPixelPtr[index+1])
+    blue  = ord(self.charPixelPtr[index+2])
+    alpha = ord(self.charPixelPtr[index+3])
     #print type(red),green,blue,alpha
     return (red,green,blue,alpha)
 
