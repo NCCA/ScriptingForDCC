@@ -9,52 +9,52 @@ from MayaImage import MayaImage
 
 
 def create(verts, faces, merge=True):
-    '''
-    Given a list of vertices (iterables of floats) and a list of faces (iterable of integer vert indices),
-    creates and returns a maya Mesh
-    '''
+	'''
+	Given a list of vertices (iterables of floats) and a list of faces (iterable of integer vert indices),
+	creates and returns a maya Mesh
+	'''
 
-    cmds.select(cl=True)  
-    outputMesh = OpenMaya.MObject()
+	cmds.select(cl=True)  
+	outputMesh = OpenMaya.MObject()
 
-    numFaces = len(faces)
-    numVertices = len(verts)
+	numFaces = len(faces)
+	numVertices = len(verts)
 
-    # point array of plane vertex local positions
-    points = OpenMaya.MFloatPointArray()
-    for eachVt in verts:
-        p = OpenMaya.MFloatPoint(eachVt[0], eachVt[1], eachVt[2])
-        points.append(p)
+	# point array of plane vertex local positions
+	points = OpenMaya.MFloatPointArray()
+	for eachVt in verts:
+		p = OpenMaya.MFloatPoint(eachVt[0], eachVt[1], eachVt[2])
+		points.append(p)
 
-    # vertex connections per poly face in one array of indexs into point array given above
-    faceConnects = OpenMaya.MIntArray()
-    for eachFace in faces:
-        for eachCorner in eachFace:
-            faceConnects.append(int(eachCorner))
+	# vertex connections per poly face in one array of indexs into point array given above
+	faceConnects = OpenMaya.MIntArray()
+	for eachFace in faces:
+		for eachCorner in eachFace:
+			faceConnects.append(int(eachCorner))
 
-    # an array to hold the total number of vertices that each face has
-    faceCounts = OpenMaya.MIntArray()
-    for c in range(0, numFaces, 1):
-        faceCounts.append(int(4))
+	# an array to hold the total number of vertices that each face has
+	faceCounts = OpenMaya.MIntArray()
+	for c in range(0, numFaces, 1):
+		faceCounts.append(int(4))
 
-    # create mesh object using arrays above and get name of new mesh
-    meshFN = OpenMaya.MFnMesh()
-    """
-    print numVertices,numFaces
-    print points
-    print faceCounts
-    print faceConnects
-    """
-    newMesh = meshFN.create(numVertices, numFaces, points, faceCounts, faceConnects, outputMesh)
-    nodeName = meshFN.name()
-    cmds.sets(nodeName, add='initialShadingGroup')  
-    cmds.select(nodeName)  
-    meshFN.updateSurface()
-    # this is useful because it deletes stray vertices (ie, those not used in any faces)
-    if merge:
-        cmds.polyMergeVertex(nodeName, ch=0)
-    meshFN.updateSurface()
-    return nodeName
+	# create mesh object using arrays above and get name of new mesh
+	meshFN = OpenMaya.MFnMesh()
+	# print numVertices
+	# print numFaces
+	# print points
+	# print faceCounts
+	# print faceConnects
+	# print outputMesh
+	newMesh = meshFN.create(numVertices, numFaces, points, faceCounts, faceConnects, outputMesh)
+	nodeName = meshFN.name()
+	cmds.sets(nodeName, add='initialShadingGroup')  
+	cmds.select(nodeName)  
+	meshFN.updateSurface()
+	# this is useful because it deletes stray vertices (ie, those not used in any faces)
+	if merge:
+		cmds.polyMergeVertex(nodeName, ch=0)
+	meshFN.updateSurface()
+	return nodeName
 
 
 def main(filename,outname,width,height) :
@@ -68,13 +68,13 @@ def main(filename,outname,width,height) :
 	cmds.constructionHistory(tgl = 'off')
 
 	faceIndex=int(0)
-	xstep=width/float(img.width())
-	zstep=height/float(img.height())
+	xstep=width/float(img.width)
+	zstep=height/float(img.height)
 	
 	sz=-height/2.0
-	h=img.height()
-	w=img.width()
-
+	h=int(img.height)
+	w=int(img.width)
+	
 
 	for y in range(0,h-1) :
 		sx=-width/2.0
@@ -83,7 +83,6 @@ def main(filename,outname,width,height) :
 			pixel2=img.getRGB(x,y+1)
 			pixel3=img.getRGB(x+1,y)
 			pixel4=img.getRGB(x+1,y+1)
-
 			verts.append((sx,float(pixel1[0])*0.1,sz))
 			verts.append((sx,float(pixel2[0])*0.1,sz+zstep))
 			verts.append((sx+xstep,float(pixel4[0])*0.1,sz+zstep))
@@ -92,7 +91,6 @@ def main(filename,outname,width,height) :
 			faces.append((faceIndex,faceIndex+1,faceIndex+2,faceIndex+3))
 			faceIndex+=4
 		sz+=zstep
-
 	create(verts,faces)
 	#cmds.select(all=True)
 	cmds.file(outname,type="OBJexport",pr=True,es=True)
