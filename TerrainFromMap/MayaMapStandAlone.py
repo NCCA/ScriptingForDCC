@@ -17,10 +17,7 @@ def create(verts, faces, merge=True):
 	cmds.select(cl=True)  
 	outputMesh = OpenMaya.MObject()
 
-	# numFaces = len(faces)
-	# numVertices = len(verts)
-
-	# point array of plane vertex local positions
+	# point array of mesh vertex local positions
 	points = OpenMaya.MFloatPointArray()
 	for eachVt in verts:
 		p = OpenMaya.MFloatPoint(eachVt[0], eachVt[1], eachVt[2])
@@ -32,27 +29,21 @@ def create(verts, faces, merge=True):
 		for eachCorner in eachFace:
 			faceConnects.append(int(eachCorner))
 
-	# an array to hold the total number of vertices that each face has
+	# an array to hold the total number of vertices that each face has in this case quads so 4
 	faceCounts = OpenMaya.MIntArray()
-	# for c in range(0, numFaces, 1):
-	# 	faceCounts.append(int(4))
+	# python lists can be multiplied to duplicate
 	faceCounts=[4]*len(faces)
-	# create mesh object using arrays above and get name of new mesh
+	# get a mesh function set
 	meshFN = OpenMaya.MFnMesh()
-	# print numVertices
-	# print numFaces
-	# print points
-	# print faceCounts
-	# print faceConnects
-	# print outputMesh
+	# create mesh object using arrays above 
 	meshFN.create( points, faceCounts, faceConnects, parent=outputMesh)
+	# now grab the name of the mesh 
 	nodeName = meshFN.name()
 	cmds.sets(nodeName, add='initialShadingGroup')  
 	cmds.select(nodeName)  
 	meshFN.updateSurface()
 	# this is useful because it deletes stray vertices (ie, those not used in any faces)
-	if merge:
-		cmds.polyMergeVertex(nodeName, ch=0)
+	cmds.polyMergeVertex(nodeName, ch=0)
 	meshFN.updateSurface()
 	return nodeName
 

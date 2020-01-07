@@ -29,9 +29,6 @@ def buildMesh() :
   faceCounts.append(4)
 
   meshFN = OpenMaya.MFnMesh()
-  print ("create Mesh")
-# |      create(vertices, polygonCounts, polygonConnects, uValues=None, vValues=None, parent=kNullObj) -> MObject
-# |      create(vertices, edges, edgeConnectsCount, edgeFaceConnects, edgeFaceDesc, storeDoubles=False, parent=kNullObj) -> MObject
 
   meshFN.create(points, [4],faceConnects)
   nodeName = meshFN.name()
