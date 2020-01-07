@@ -1,6 +1,6 @@
 #!/opt/autodesk/maya/bin/mayapy
 import maya.cmds as cmds
-import maya.OpenMaya as OpenMaya
+import maya.api.OpenMaya as OpenMaya
 import maya.standalone
 import argparse
 from MayaImage import MayaImage
@@ -17,8 +17,8 @@ def create(verts, faces, merge=True):
 	cmds.select(cl=True)  
 	outputMesh = OpenMaya.MObject()
 
-	numFaces = len(faces)
-	numVertices = len(verts)
+	# numFaces = len(faces)
+	# numVertices = len(verts)
 
 	# point array of plane vertex local positions
 	points = OpenMaya.MFloatPointArray()
@@ -34,9 +34,9 @@ def create(verts, faces, merge=True):
 
 	# an array to hold the total number of vertices that each face has
 	faceCounts = OpenMaya.MIntArray()
-	for c in range(0, numFaces, 1):
-		faceCounts.append(int(4))
-
+	# for c in range(0, numFaces, 1):
+	# 	faceCounts.append(int(4))
+	faceCounts=[4]*len(faces)
 	# create mesh object using arrays above and get name of new mesh
 	meshFN = OpenMaya.MFnMesh()
 	# print numVertices
@@ -45,7 +45,7 @@ def create(verts, faces, merge=True):
 	# print faceCounts
 	# print faceConnects
 	# print outputMesh
-	newMesh = meshFN.create(numVertices, numFaces, points, faceCounts, faceConnects, outputMesh)
+	meshFN.create( points, faceCounts, faceConnects, parent=outputMesh)
 	nodeName = meshFN.name()
 	cmds.sets(nodeName, add='initialShadingGroup')  
 	cmds.select(nodeName)  
