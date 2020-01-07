@@ -127,7 +127,7 @@ def create(verts, faces, merge=True):
     return nodeName
 
 
-def main(filename,outname) :
+def main(filename,outname,width,height) :
 
 
 	img=MayaImage(filename)
@@ -135,22 +135,19 @@ def main(filename,outname) :
 
 	verts = []
 	faces = []
-	width=200.0 
-	height=200.0
 	cmds.constructionHistory(tgl = 'off')
 
 	faceIndex=int(0)
 	xstep=width/float(img.width())
-	zpos=-1.0
 	zstep=height/float(img.height())
-	sz=-10.0
+	
+	sz=-height/2.0
 	h=img.height()
 	w=img.width()
 
 
-
 	for y in range(0,h-1) :
-		sx=-10
+		sx=-width/2.0
 		for x in range(0,w) :
 			pixel1=img.getRGB(x,y)
 			pixel2=img.getRGB(x,y+1)
@@ -167,7 +164,7 @@ def main(filename,outname) :
 		sz+=zstep
 
 	create(verts,faces)
-	cmds.select(all=True)
+	#cmds.select(all=True)
 	cmds.file(outname,type="OBJexport",pr=True,es=True)
 
 
@@ -180,7 +177,14 @@ if __name__ == '__main__':
 	parser.add_argument('--outputfile', '-o', nargs='?', type=str, required=True,
 											help='output file name')
 
+
+	parser.add_argument('--width', '-w', nargs='?', type=float, default=20.0,
+												help='width of output mesh')
+
+	parser.add_argument('--depth', '-d', nargs='?', type=float, default=20.0,
+												help='depth of output mesh')
+
 	args = parser.parse_args()
 	maya.standalone.initialize(name='python')
 	cmds.loadPlugin('objExport')
-	main(args.inputfile,args.outputfile)
+	main(args.inputfile,args.outputfile,args.width,args.depth)
