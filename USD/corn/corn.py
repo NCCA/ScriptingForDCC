@@ -5,6 +5,9 @@ import random
 import OpenImageIO as oiio
 
 
+
+
+
 def _addModel(model,prototypesPrimPath,stage) :
   # the name must be a full path without the . so just strip .usd from name
   name=model[0:model.find('.')]
@@ -95,11 +98,21 @@ def _addGround(stage,width,depth) :
   UsdShade.MaterialBindingAPI(boxPrim).Bind(material)
 
 
+def _addCamera(stage) :
+  cam = UsdGeom.Camera.Define(stage, '/World/main_cam')
 
+  # the camera derives from UsdGeom.Xformable so we can 
+  # use the XformCommonAPI on it, too, and see how rotations are handled
+  xformAPI = UsdGeom.XformCommonAPI(cam)
+  xformAPI.SetTranslate( (8, 12, 8) )
+  # -86 degree rotation around X axis.  Can specify rotation order as
+  # optional parameter
+  xformAPI.SetRotate( (-86, 0, 0 ) )
 
 def main() :
   stage = Usd.Stage.CreateNew('CornField.usd')
   world = UsdGeom.Xform.Define(stage, '/World')
+  _addCamera(stage)
   buf = oiio.ImageBuf ( 'cropMap.png')
   spec = buf.spec()
   divisor=1
