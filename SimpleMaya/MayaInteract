@@ -1,0 +1,7 @@
+#!/bin/bash
+"exec" "/opt/autodesk/maya/bin/mayapy" "$0"
+
+import code
+import maya.standalone
+maya.standalone.initialize(name='python')
+code.interact(local=locals())
