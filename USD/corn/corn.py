@@ -104,10 +104,10 @@ def _addCamera(stage) :
   # the camera derives from UsdGeom.Xformable so we can 
   # use the XformCommonAPI on it, too, and see how rotations are handled
   xformAPI = UsdGeom.XformCommonAPI(cam)
-  xformAPI.SetTranslate( (8, 12, 8) )
+  xformAPI.SetTranslate( (8, 1.8, 8) )
   # -86 degree rotation around X axis.  Can specify rotation order as
   # optional parameter
-  xformAPI.SetRotate( (-86, 0, 0 ) )
+  xformAPI.SetRotate( (-10, 0, 0 ) )
 
 def main() :
   stage = Usd.Stage.CreateNew('CornField.usd')
