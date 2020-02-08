@@ -5,9 +5,6 @@ import maya.standalone
 import argparse
 from MayaImage import MayaImage
 
-
-
-
 def create(verts, faces, merge=True):
 	'''
 	Given a list of vertices (iterables of floats) and a list of faces (iterable of integer vert indices),
