@@ -5,7 +5,7 @@ import ctypes
 
 class MayaImage :
   @classmethod 
-  def __init__(self,filename=None,width=None,height=None) :
+  def __init__(self,filename=None,width=None,height=None,channels=4,imagetype=OpenMaya.kByte) :
     """ constructor pass in the name of the file to load (absolute file name with path)
     or width and height to create and image
     """
@@ -23,7 +23,12 @@ class MayaImage :
       raise ValueError('ImageError trouble converting arguments')
     # create an MImage object
     self.image=OpenMaya.MImage()
-
+    self.channels=channels
+    self.type=imagetype
+    if filename !=None :
+      self.readImage(filename)
+    else :
+      self.image.create(self.width,self.height,self.channels,self.type)
 
   def readImage(self,filename) :
     # read from file MImage should handle errors for us so no need to check
