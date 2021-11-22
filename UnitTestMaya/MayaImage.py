@@ -14,9 +14,8 @@ class MayaImage :
         self.width=int(width)
         self.height=int(height)
       except ValueError :
-        print('error converting values to int')
-        exit()
-      print('creating empty image {}x{}'.format(width,height))
+        raise ValueError('error converting values to int')
+        
     else :
       raise ValueError('ImageError trouble converting arguments')
     # create an MImage object

@@ -25,7 +25,7 @@ def _addModel(model,prototypesPrimPath,stage) :
  
   pbrShader.CreateInput("roughness", Sdf.ValueTypeNames.Float).Set(0.2)
   pbrShader.CreateInput("metallic", Sdf.ValueTypeNames.Float).Set(0.1)
-  material.CreateSurfaceOutput().ConnectToSource(pbrShader, "surface")
+  #material.CreateSurfaceOutput().ConnectToSource(pbrShader, "surface")
 
   stReader = UsdShade.Shader.Define(stage, materialRoot+'/stReader')
   stReader.CreateIdAttr('UsdPrimvarReader_float2')
@@ -33,16 +33,16 @@ def _addModel(model,prototypesPrimPath,stage) :
   diffuseTextureSampler = UsdShade.Shader.Define(stage,materialRoot+'/diffuseTexture')
   diffuseTextureSampler.CreateIdAttr('UsdUVTexture')
   diffuseTextureSampler.CreateInput('file', Sdf.ValueTypeNames.Asset).Set(name+'Leaves.png')
-  diffuseTextureSampler.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(stReader, 'result')
+  #diffuseTextureSampler.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(stReader, 'result')
   diffuseTextureSampler.CreateOutput('rgb', Sdf.ValueTypeNames.Float3)
   diffuseTextureSampler.CreateOutput('a', Sdf.ValueTypeNames.Float)
-  pbrShader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).ConnectToSource(diffuseTextureSampler, 'rgb')
-  pbrShader.CreateInput("opacityThreshold", Sdf.ValueTypeNames.Float).ConnectToSource(diffuseTextureSampler, 'a')
+  #pbrShader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).ConnectToSource(diffuseTextureSampler, 'rgb')
+  #pbrShader.CreateInput("opacityThreshold", Sdf.ValueTypeNames.Float).ConnectToSource(diffuseTextureSampler, 'a')
  
  
   stInput = material.CreateInput('frame:stPrimvarName', Sdf.ValueTypeNames.Token)
   stInput.Set('st')
-  stReader.CreateInput('varname',Sdf.ValueTypeNames.Token).ConnectToSource(stInput)
+  #stReader.CreateInput('varname',Sdf.ValueTypeNames.Token).ConnectToSource(stInput)
   UsdShade.MaterialBindingAPI(tree).Bind(material)
 
 
@@ -57,14 +57,14 @@ def _addModel(model,prototypesPrimPath,stage) :
   pbrShader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).Set((0.5,0.2,0.0))
   pbrShader.CreateInput("roughness", Sdf.ValueTypeNames.Float).Set(0.2)
   pbrShader.CreateInput("metallic", Sdf.ValueTypeNames.Float).Set(0.1)
-  material.CreateSurfaceOutput().ConnectToSource(pbrShader, "surface")
+  #material.CreateSurfaceOutput().ConnectToSource(pbrShader, "surface")
   # add texture
   diffuseTextureSampler = UsdShade.Shader.Define(stage,materialRoot+'/diffuseTexture')
   diffuseTextureSampler.CreateIdAttr('UsdUVTexture')
   diffuseTextureSampler.CreateInput('file', Sdf.ValueTypeNames.Asset).Set(name+'Trunk.png')
-  diffuseTextureSampler.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(stReader, 'result')
+  #diffuseTextureSampler.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(stReader, 'result')
   diffuseTextureSampler.CreateOutput('rgb', Sdf.ValueTypeNames.Float3)
-  pbrShader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).ConnectToSource(diffuseTextureSampler, 'rgb')
+  #pbrShader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).ConnectToSource(diffuseTextureSampler, 'rgb')
   
   stInput = material.CreateInput('frame:stPrimvarName', Sdf.ValueTypeNames.Token)
   stInput.Set('st')
@@ -95,8 +95,8 @@ def _addGround(stage,width,height) :
  
   pbrShader.CreateInput("roughness", Sdf.ValueTypeNames.Float).Set(0.9)
   pbrShader.CreateInput("metallic", Sdf.ValueTypeNames.Float).Set(0.0)
-  material.CreateSurfaceOutput().ConnectToSource(pbrShader, "surface")
-  UsdShade.MaterialBindingAPI(boxPrim).Bind(material)
+  #material.CreateSurfaceOutput().ConnectToSource(pbrShader, "surface")
+  #UsdShade.MaterialBindingAPI(boxPrim).Bind(material)
 
 
 
