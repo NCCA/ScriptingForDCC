@@ -20,7 +20,14 @@ class SimpleNode(om.MPxNode):
     string_attr = None
     bool_attr = None
     color_attr = None
-    matrix_attr = None    
+    matrix_attr = None  
+    time_attr = None    
+    angle_attr = None
+    time_attr = None
+    enum_attr = None
+    ramp_attr = None
+    curve_ramp_attr = None
+	
 	
     @staticmethod
     def _set_attr_default( attr_FN):
@@ -85,7 +92,32 @@ class SimpleNode(om.MPxNode):
         SimpleNode._set_attr_default(angle_attrFN)
         om.MPxNode.addAttribute(SimpleNode.angle_attr)
 		
+        # add a time attribute
+        time_attrFN = om.MFnUnitAttribute()
+        SimpleNode.time_attr = time_attrFN.create("time_attr", "ta", om.MFnUnitAttribute.kTime, 0.0)
+        SimpleNode._set_attr_default(time_attrFN)
+        om.MPxNode.addAttribute(SimpleNode.time_attr)
+		
+        # add an enum attribute
+        enum_attrFN = om.MFnEnumAttribute()
+        SimpleNode.enum_attr = enum_attrFN.create("enum_attr", "ea", 0)
+        enum_attrFN.addField("Option 1", 0)
+        enum_attrFN.addField("Option 2", 1)
+        enum_attrFN.addField("Option 3", 2)
+        SimpleNode._set_attr_default(enum_attrFN)
+        om.MPxNode.addAttribute(SimpleNode.enum_attr)
+		
+        # create a ramp attribute
+        ramp_attrFN = om.MRampAttribute()
+        SimpleNode.ramp_attr = ramp_attrFN.createColorRamp("ramp_attr", "ra")
 
+        om.MPxNode.addAttribute(SimpleNode.ramp_attr)
+		
+        # create a curve ramp
+        curve_ramp_attrFN = om.MRampAttribute()
+        SimpleNode.curve_ramp_attr = curve_ramp_attrFN.createCurveRamp("curve_ramp_attr", "cra")
+        om.MPxNode.addAttribute(SimpleNode.curve_ramp_attr)
+		
 		
 
     def compute(self, plug, data):
@@ -184,6 +216,20 @@ if __name__ == "__main__":
     result=[1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
     assert matrix==result
 	
+    # test the angle attribute
+    cmds.setAttr("SimpleNode.angle_attr", 90.0)
+    assert cmds.getAttr("SimpleNode.angle_attr")==90.0
+	
+    # test the time attribute
+    cmds.setAttr("SimpleNode.time_attr", 10.0)
+    assert cmds.getAttr("SimpleNode.time_attr")==10.0
+	
+    # test the enum attribute
+    cmds.setAttr("SimpleNode.enum_attr", 1)
+    assert cmds.getAttr("SimpleNode.enum_attr")==1
+	
+    
+
     # now save the scene with the node in it
     cmds.file(save=True, de=False, type="mayaAscii")
     maya.standalone.uninitialize()
