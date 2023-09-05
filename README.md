@@ -1,5 +1,8 @@
 # ScriptingForDCC
-Demo Code for the new Optional Unit Scripting for DCC
+
+This repository holds the lecture code used for the 2nd year opetional unit. The webpage with lecture notes is [here](https://nccastaff.bournemouth.ac.uk/jmacey/sfdcc/)
+
+
 
 ## [houAsCode.py](houAsCode.py)
 
