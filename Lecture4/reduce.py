@@ -24,7 +24,7 @@ class Point3:
         self.y = y
         self.z = z
     @classmethod
-    def rand_point(cls,range: float = 10.0) -> Point3:
+    def rand_point(cls : Point3,range: float = 10.0) -> Point3:
         """Return a random point"""
         return Point3(
             random.uniform(-range, range),
