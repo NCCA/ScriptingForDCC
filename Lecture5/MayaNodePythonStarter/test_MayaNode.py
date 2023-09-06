@@ -17,6 +17,8 @@ def setup_module(module):
 
 
 def teardown_module(module):
+    cmds.delete("SimpleNode")
+    assert cmds.objExists("SimpleNode")==False
     maya.standalone.uninitialize()
 
 
@@ -40,3 +42,35 @@ def test_color_attr():
     assert cmds.getAttr("SimpleNode.color_attr")[0][0]==1.0
     assert cmds.getAttr("SimpleNode.color_attr")[0][1]==0.0
     assert cmds.getAttr("SimpleNode.color_attr")[0][2]==0.0
+
+def test_matrix_attr():
+    # create a matrix
+    matrix = om.MMatrix()
+    # set the matrix to the identity matrix
+    matrix.setToIdentity()
+    # set the matrix attribute  
+    cmds.setAttr("SimpleNode.matrix_attr", matrix, type="matrix")
+    # get the matrix attribute
+    matrix = cmds.getAttr("SimpleNode.matrix_attr") 
+    
+    # now test the matrix is correct as simple identity should be ok for float compare
+    result=[1.0, 0.0, 0.0, 0.0, 
+            0.0, 1.0, 0.0, 0.0, 
+            0.0, 0.0, 1.0, 0.0, 
+            0.0, 0.0, 0.0, 1.0]
+    assert matrix==result
+
+def test_angle_attr():
+    cmds.setAttr("SimpleNode.angle_attr", 90.0)
+    assert cmds.getAttr("SimpleNode.angle_attr")==90.0
+
+def test_time_attr():
+    cmds.setAttr("SimpleNode.time_attr", 10.0)
+    assert cmds.getAttr("SimpleNode.time_attr")==10.0
+
+
+def test_enum_attr():
+    cmds.setAttr("SimpleNode.enum_attr", 1)
+    assert cmds.getAttr("SimpleNode.enum_attr")==1
+
+

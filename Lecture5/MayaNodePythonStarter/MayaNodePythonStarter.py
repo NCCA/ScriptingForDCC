@@ -40,6 +40,38 @@ class SimpleNode(om.MPxNode):
     def __init__(self):
         om.MPxNode.__init__(self)
 
+    def postConstructor(self):
+        """This method is called after the node has been created and we can
+        do any initialisation here. In this case we want to create a ramp with some 
+        default values
+        """
+        # grab this instance of the node
+        this_node = self.thisMObject()
+        # now we want the ramp attribute for our colours
+        plug  = om.MPlug(this_node, SimpleNode.ramp_attr)
+        # grab the ramp attribute by creating a ramp object
+        ramp=om.MRampAttribute(plug)
+        # The maya api is really this bad, we need to create arrays
+        # then stuff them with values and then pass them to the ramp addEntries
+        # method. It would be so nice if 
+        values=om.MIntArray()
+        values.append(0)
+        values.append(1)
+        values.append(2)
+        colours=om.MColorArray()
+        red=om.MColor((1.0, 0.0, 0.0, 1.0))
+        green=om.MColor((0.0, 1.0, 0.0, 1.0))
+        blue=om.MColor((0.0, 0.0, 1.0, 1.0))
+        interp=om.MIntArray()
+        interp.append(om.MRampAttribute.kSmooth)
+        interp.append(om.MRampAttribute.kSmooth)
+        interp.append(om.MRampAttribute.kSmooth)
+        colours.append(red)
+        colours.append(green)
+        colours.append(blue)
+        ramp.addEntries(values,colours,interp)
+
+
     
     @staticmethod
     def creator():
@@ -104,8 +136,6 @@ class SimpleNode(om.MPxNode):
         SimpleNode.ramp_attr = ramp_attrFN.createColorRamp("ramp_attr", "ra")		
         om.MPxNode.addAttribute(SimpleNode.ramp_attr)
 		
-
-
         # create a curve ramp
         curve_ramp_attrFN = om.MRampAttribute()
         SimpleNode.curve_ramp_attr = curve_ramp_attrFN.createCurveRamp("curve_ramp_attr", "cra")
@@ -120,12 +150,6 @@ class SimpleNode(om.MPxNode):
 def initializePlugin(obj):
 	plugin = om.MFnPlugin(obj)
 	try:
-		plugin.registerCommand("SimpleNode", SimpleNode.creator)
-	except:
-		sys.stderr.write("Failed to register command\n")
-		raise
-
-	try:
 		plugin.registerNode("SimpleNode", SimpleNode.id, SimpleNode.creator, SimpleNode.initialize)
 	except:
 		sys.stderr.write("Failed to register node\n")
@@ -136,11 +160,6 @@ def initializePlugin(obj):
 #
 def uninitializePlugin(obj):
 	plugin = om.MFnPlugin(obj)
-	try:
-		plugin.deregisterCommand("SimpleNode")
-	except:
-		sys.stderr.write("Failed to deregister command\n")
-		raise
 
 	try:
 		plugin.deregisterNode(SimpleNode.id)
