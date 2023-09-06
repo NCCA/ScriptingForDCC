@@ -40,15 +40,7 @@ class SimpleNode(om.MPxNode):
     def __init__(self):
         om.MPxNode.__init__(self)
 
-    def doIt(self, args):
-        """
-        Called when the command is executed in script
-        """
-        print("This should come from the python shell")
-        om.MGlobal.displayWarning("This should be a warning")
-        om.MGlobal.displayError("This should be an error")
-        om.MGlobal.displayInfo("This should be an info message")
-
+    
     @staticmethod
     def creator():
         """
@@ -109,10 +101,11 @@ class SimpleNode(om.MPxNode):
 		
         # create a ramp attribute
         ramp_attrFN = om.MRampAttribute()
-        SimpleNode.ramp_attr = ramp_attrFN.createColorRamp("ramp_attr", "ra")
-
+        SimpleNode.ramp_attr = ramp_attrFN.createColorRamp("ramp_attr", "ra")		
         om.MPxNode.addAttribute(SimpleNode.ramp_attr)
 		
+
+
         # create a curve ramp
         curve_ramp_attrFN = om.MRampAttribute()
         SimpleNode.curve_ramp_attr = curve_ramp_attrFN.createCurveRamp("curve_ramp_attr", "cra")
