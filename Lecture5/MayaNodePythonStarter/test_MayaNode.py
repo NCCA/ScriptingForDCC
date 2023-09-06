@@ -12,6 +12,8 @@ def setup_module(module):
     location = pathlib.Path().absolute()
 
     cmds.loadPlugin(f"{location}/MayaNodePythonStarter.py")
+    cmds.createNode("SimpleNode",name="SimpleNode")
+
 
 
 def teardown_module(module):
@@ -19,12 +21,8 @@ def teardown_module(module):
 
 
 def test_createNode():
-    cmds.createNode("SimpleNode",name="SimpleNode")
     assert cmds.objExists("SimpleNode")==True
-    cmds.delete("SimpleNode")
 
 def test_float_attr():
-    cmds.createNode("SimpleNode",name="SimpleNode")
     cmds.setAttr("SimpleNode.float_attr", 1.0)
     assert cmds.getAttr("SimpleNode.float_attr")==1.0
-    cmds.delete("SimpleNode")
