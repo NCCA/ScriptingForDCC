@@ -26,3 +26,17 @@ def test_createNode():
 def test_float_attr():
     cmds.setAttr("SimpleNode.float_attr", 1.0)
     assert cmds.getAttr("SimpleNode.float_attr")==1.0
+
+def test_string_attr():
+    cmds.setAttr("SimpleNode.string_attr", "Hello World", type="string")
+    assert cmds.getAttr("SimpleNode.string_attr")=="Hello World"
+
+def test_bool_attr():
+    cmds.setAttr("SimpleNode.bool_attr", 1)
+    assert cmds.getAttr("SimpleNode.bool_attr")==True
+
+def test_color_attr():
+    cmds.setAttr("SimpleNode.color_attr", 1.0, 0.0, 0.0, type="double3")
+    assert cmds.getAttr("SimpleNode.color_attr")[0][0]==1.0
+    assert cmds.getAttr("SimpleNode.color_attr")[0][1]==0.0
+    assert cmds.getAttr("SimpleNode.color_attr")[0][2]==0.0
