@@ -185,8 +185,8 @@ class TriLocatorDrawOverride(omr.MPxDrawOverride):
 
 
     def addUIDrawables(self, objPath, drawManager, frameContext, data):
-        locatordata = data
-        if not isinstance(locatordata, TriLocatorData):
+        locator_data = data
+        if not isinstance(locator_data, TriLocatorData):
             return
 
         drawManager.beginDrawable()
@@ -194,9 +194,9 @@ class TriLocatorDrawOverride(omr.MPxDrawOverride):
         drawManager.setDepthPriority(5)
 
         if (frameContext.getDisplayStyle() & omr.MFrameContext.kGouraudShaded):
-            drawManager.mesh(omr.MGeometry.kTriangles, locatordata.triangle_array,locatordata.normal_array, locatordata.colour_array)
-            
-        drawManager.mesh(omr.MUIDrawManager.kLineStrip, locatordata.line_array, locatordata.normal_array, locatordata.colour_array)
+            drawManager.mesh(omr.MGeometry.kTriangles, locator_data.triangle_array,locator_data.normal_array, locator_data.colour_array)
+        else :   
+            drawManager.mesh(omr.MUIDrawManager.kLineStrip, locator_data.line_array, locator_data.normal_array, locator_data.colour_array)
 
         ## Draw a text "Foot"
         pos = om.MPoint( 0.0, 0.0, 0.0 )  ## Position of the text

@@ -54,21 +54,11 @@ class SimpleNode(om.MPxNode):
         # The maya api is really this bad, we need to create arrays
         # then stuff them with values and then pass them to the ramp addEntries
         # method. It would be so nice if 
-        values=om.MIntArray()
-        values.append(0)
-        values.append(1)
-        values.append(2)
-        colours=om.MColorArray()
-        red=om.MColor((1.0, 0.0, 0.0, 1.0))
-        green=om.MColor((0.0, 1.0, 0.0, 1.0))
-        blue=om.MColor((0.0, 0.0, 1.0, 1.0))
-        interp=om.MIntArray()
-        interp.append(om.MRampAttribute.kSmooth)
-        interp.append(om.MRampAttribute.kSmooth)
-        interp.append(om.MRampAttribute.kSmooth)
-        colours.append(red)
-        colours.append(green)
-        colours.append(blue)
+        values=om.MIntArray([0,1,2])
+        colours=om.MColorArray([om.MColor((1.0, 0.0, 0.0, 1.0)),
+                                om.MColor((0.0, 1.0, 0.0, 1.0)),
+                                om.MColor((0.0, 0.0, 1.0, 1.0))])
+        interp=om.MIntArray([om.MRampAttribute.kSmooth]*3)
         ramp.addEntries(values,colours,interp)
 
 
