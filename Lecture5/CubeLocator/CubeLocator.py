@@ -234,17 +234,11 @@ class CubeLocatorDrawOverride(omr.MPxDrawOverride):
         drawManager.setDepthPriority(5)
         # only draw wireframe, see TriangleLocator.py for shaded example
         for index in locator_data.indices:
-            print(type(index))
             drawManager.mesh(
                 omr.MUIDrawManager.kClosedLine,
                 locator_data.line_array,
                 index=index,
             )
-        # drawManager.mesh(
-        #         omr.MUIDrawManager.kLineStrip,
-        #         locator_data.line_array,
-        #     )
-
         drawManager.endDrawable()
 
 
